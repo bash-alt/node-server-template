@@ -1,0 +1,22 @@
+var express = require('express');
+var compression = require('compression');
+var path = require('path');
+var favicon = require('serve-favicon');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
+var app = express();
+app.set('x-powered-by', false);
+app.use(compression());
+app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use('*', function (req, res) {
+    res.sendFile('index.html', { root: path.join(__dirname, 'dist') });
+});
+module.exports = app;
